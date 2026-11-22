@@ -1,16 +1,22 @@
 {
-  "id": "coolcode-tool-template",
-  "title": "CoolCode Tool Starter",
-  "description": "A browser-only example that trims lines and removes exact duplicates.",
+  "id": "registrarwatch",
+  "title": "RegistrarWatch",
+  "description": "Compare reported phishing domains across registrars, adjust for portfolio size and trace each registrar across quarters.",
   "category": "security",
-  "tags": ["text", "lines", "duplicates"],
+  "tags": [
+    "phishing",
+    "registrars",
+    "DNS abuse",
+    "domains",
+    "IANA"
+  ],
   "icon": "scan-search",
-  "url": "/coolcode-tool-template/",
-  "source": "https://github.com/jsdyer/coolcode-tool-template",
+  "url": "/registrarwatch/",
+  "source": "https://github.com/jsdyer/registrarwatch",
   "hosting": "project",
   "access": "browser",
   "data_info": {
-    "mode": "local",
-    "detail": "The browser reads the text you paste and compares its lines."
+    "mode": "snapshot",
+    "detail": "Eight gTLD registrars are tracked in Interisle quarterly phishing data. Load a public source CSV locally for the full table."
   }
 }

@@ -1,34 +1,32 @@
 <!doctype html>
 <html lang="en-CA">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="{{DESCRIPTION}}">
-  <title>{{TITLE}} · CoolCode</title>
-  <link rel="stylesheet" href="./style.css">
-  <script type="module" src="./app.mjs"></script>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="{{DESCRIPTION}}"><title>{{TITLE}} · CoolCode</title>
+  <link rel="stylesheet" href="./style.css"><script type="module" src="./app.mjs"></script>
   {{VISIT_COUNTER}}
 </head>
 <body data-tool-id="{{TOOL_ID}}">
   <a class="skip" href="#main">Skip to content</a>
-  <header><a href="https://coolcode.ca/">← CoolCode.ca</a><a href="{{SOURCE_URL}}">Source &amp; instructions ↗</a></header>
-  <main id="main">
-    <p class="eyebrow">Browser tool starter</p>
-    <h1>{{TITLE}}</h1>
-    <p class="intro">{{DESCRIPTION}}</p>
-    <section aria-labelledby="example-title">
-      <h2 id="example-title">Clean a list</h2>
-      <p>Trim spaces, skip blank lines and remove exact duplicates. Capitalization stays distinct.</p>
-      <div class="panels">
-        <div><label for="input">Your lines</label><textarea id="input" rows="10" maxlength="100000" spellcheck="false" placeholder="Paste one item per line"></textarea></div>
-        <div><label for="output">Cleaned lines</label><textarea id="output" rows="10" readonly spellcheck="false"></textarea></div>
-      </div>
-      <div class="actions"><button id="sample" type="button">Load example</button><button id="clear" type="button">Clear</button><button id="copy" type="button" hidden>Copy result</button></div>
-      <p id="status" role="status" aria-live="polite">Paste a list to begin.</p>
-      <noscript><p>This tool needs JavaScript to process your text. The source is available above.</p></noscript>
-    </section>
-    <aside aria-label="Privacy"><strong>Stays on your device.</strong> The browser processes your text in this tab. Reloading clears it.</aside>
+  <header><div class="wrap"><a class="brand" href="https://coolcode.ca/">CoolCode<span>.ca</span></a><nav aria-label="Related tools"><a href="https://coolcode.ca/abusepulse/">AbusePulse</a><a href="https://coolcode.ca/scamtrace/">ScamTrace</a><a href="https://coolcode.ca/phishintel/">PhishIntel</a><a href="https://coolcode.ca/fraudpulse/">FraudPulse</a><a href="https://coolcode.ca/atip/">ATIP</a></nav></div></header>
+  <main id="main" class="wrap">
+    <section class="intro"><div><h1>{{TITLE}}</h1><p>{{DESCRIPTION}}</p></div><label>Reporting period<select id="period" disabled></select></label></section>
+    <p id="status" role="status">Loading public registrar measurements…</p>
+    <div id="explorer" hidden>
+      <div class="totals"><div><span>Registrars displayed</span><strong id="registrars"></strong></div><div><span>Reported phishing domains¹</span><strong id="domains"></strong></div><div><span>Domains under management¹</span><strong id="portfolio"></strong></div></div>
+      <section class="sheet">
+        <div class="section-title"><h2>Registrar comparison</h2><a id="csv" href="#">Source CSV ↗</a></div>
+        <div class="controls"><label>Find registrar<input id="query" type="search" placeholder="Name or IANA ID" autocomplete="off"></label><label>Order by<select id="sort"><option value="domains">Phishing domain count</option><option value="rate">Rate per 10,000</option><option value="portfolio">Portfolio size</option><option value="name">Registrar name</option></select></label></div>
+        <details><summary>Explore the full published table</summary><p id="coverage"></p><p>Download the source CSV above, then select it here. The file is matched to its published quarter by SHA-256 and read on your device.</p><label>Original Interisle CSV<input id="file" type="file" accept=".csv,text/csv"></label><p id="import-status" role="status"></p></details>
+        <p id="count" class="muted" aria-live="polite"></p>
+        <div class="scroll" tabindex="0" role="region" aria-label="Registrar comparison table"><table><thead><tr><th scope="col">Registrar</th><th scope="col">IANA ID</th><th scope="col">Portfolio</th><th scope="col">Phishing domains</th><th scope="col">Per 10,000</th></tr></thead><tbody id="rows"></tbody></table></div>
+        <div class="pagination"><button type="button" id="prev">← Previous</button><button type="button" id="next">Next →</button></div>
+      </section>
+      <section class="sheet" id="history" hidden aria-labelledby="history-title"><div class="section-title"><h2 id="history-title" tabindex="-1">Registrar history</h2><button id="close" type="button">Close</button></div><p id="history-name"></p><div class="scroll" tabindex="0" role="region" aria-label="Quarterly history table"><table><thead><tr><th scope="col">Reporting period</th><th scope="col">Portfolio</th><th scope="col">Phishing domains</th><th scope="col">Per 10,000</th></tr></thead><tbody id="periods"></tbody></table></div></section>
+    </div>
+    <section class="notes"><div><h2>Coverage &amp; interpretation</h2><p>¹ Totals sum the loaded rows before search filters. The built-in comparison follows eight selected IANA IDs. Loading an original CSV expands that quarter to the published registrar table. Its published comparisons cover generic top-level domains worldwide. Coverage depends on its feeds and inclusion criteria. An omitted registrar may fall outside the loaded selection.</p><p>Rates divide reported phishing domains by a registrar’s portfolio and multiply by 10,000. The same domain can appear in multiple quarters. These figures measure observed phishing, including on compromised domains. They do not establish registrar culpability.</p><a href="https://www.cybercrimeinfocenter.org/records-repository">Interisle public data ↗</a> · <a href="https://interisle.net/research-methodology">Methodology ↗</a><p id="updated"></p></div>
+    <div><h2>What the data leaves open</h2><p>The tables give no Canadian victim geography, referral dates, or confirmation of when a registrar acted. A registrar’s global rate cannot answer how long a reported Canadian impersonation site stayed active.</p><p>A focused CRTC request could seek existing aggregate counts of phishing-domain referrals to registrars and recorded disposition codes for one quarter.</p><a href="https://coolcode.ca/atip/#q=phishing">Explore completed ATIP requests ↗</a> · <a href="https://www.icann.org/compliance/notices">ICANN formal notices ↗</a></div></section>
+    <noscript>Enable JavaScript to search the registrar tables, or use the Interisle public data link.</noscript>
   </main>
-  <footer>Part of <a href="https://coolcode.ca/">the CoolCode collection</a>. {{ISSUE_LINK}}</footer>
-</body>
-</html>
+  <footer class="wrap"><span>Search runs in your browser. Filters in shared URLs are visible to link recipients.</span><div><a href="{{SOURCE_URL}}">Source code</a> · {{ISSUE_LINK}}</div></footer>
+</body></html>
