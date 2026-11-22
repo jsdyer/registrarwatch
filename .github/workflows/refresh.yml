@@ -1,0 +1,44 @@
+name: RegistrarWatch · Check quarterly sources
+on:
+  schedule:
+    - cron: '17 14 7,21 * *'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: registrarwatch-refresh
+  cancel-in-progress: false
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      actions: write
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+      - name: Retrieve and validate quarterly snapshots
+        run: python3 scripts/refresh.py
+      - name: Check updated data and offline build
+        run: |
+          node --test tests/*.test.mjs
+          python3 -m unittest discover -s tests -v
+          python3 scripts/build.py
+      - name: Publish new measurements when source content changes
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git add web/data
+          if ! git diff --cached --quiet; then
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git commit -m 'Refresh public quarterly registrar measurements'
+            git push
+            gh workflow run pages.yml --ref main
+          fi

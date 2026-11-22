@@ -16,7 +16,7 @@ A domain can reappear in successive quarters. Compromised sites also count as ph
 
 ## Refresh and build
 
-Run `python3 scripts/refresh.py` to discover new complete quarters, check their structure, and update the checked-in measurements when the source changes. The snapshot date is the last content change. The static build requires no credentials or network. A missing or malformed source aborts the refresh before replacing the candidate data.
+The refresh workflow checks the publisher on the 7th and 21st of each month. A changed snapshot is tested and committed before dispatching the normal Pages workflow. Run `python3 scripts/refresh.py` to discover new complete quarters, check their structure, and update the checked-in measurements when the source changes. The snapshot date is the last content change. The static build requires no credentials or network. A missing or malformed source aborts the refresh before replacing the candidate data.
 
 ```sh
 node --test tests/*.test.mjs
