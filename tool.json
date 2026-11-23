@@ -17,6 +17,7 @@
   "access": "browser",
   "data_info": {
     "mode": "snapshot",
-    "detail": "Eight gTLD registrars are tracked in Interisle quarterly phishing data. Load a public source CSV locally for the full table."
+    "detail": "Eight gTLD registrars are tracked in Interisle quarterly phishing data. Load a public source CSV locally for the full table.",
+    "cadence": "Twice monthly"
   }
 }
