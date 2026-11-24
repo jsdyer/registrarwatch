@@ -3,7 +3,7 @@ import calendar
 from concurrent.futures import ThreadPoolExecutor
 import csv
 import hashlib
-from datetime import date, datetime
+from datetime import date, datetime, timezone
 from html.parser import HTMLParser
 from io import StringIO
 import json
@@ -100,8 +100,9 @@ def main():
         if not path.exists() or json.loads(path.read_text()) != record:
             save_json(path, record)
             changed = True
-    if changed or not index.exists():
-        save_json(index, {"updated": date.today().isoformat(), "quarters": sorted(data, reverse=True)})
+    updated = date.today().isoformat() if changed or not index.exists() else previous["updated"]
+    save_json(index, {"updated": updated, "quarters": sorted(data, reverse=True),
+                      "checked_at": datetime.now(timezone.utc).isoformat(timespec="seconds")})
     print(f"{len(data)} quarters; {sum(len(row['rows']) for row in data.values())} registrar observations")
 
 
